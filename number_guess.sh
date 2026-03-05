@@ -37,13 +37,12 @@ do
   # collect guess
   read USER_GUESS
 
-  # check if guess is number
-  IS_NUMBER=$($USER_GUESS =~ "^[0-9]+$")
-  if [[ -z $IS_NUMBER ]]
-  then
-    # increment guess count
-    ((GUESS_COUNT++))
+  # increment guess count
+  ((GUESS_COUNT++))
 
+  # check if guess is number
+  if [[ $USER_GUESS =~ ^-?[0-9]+$ ]]
+  then
     # evaluate guess and guide user to correct guess
     if [[ $USER_GUESS -gt $SECRET ]]
     then
