@@ -38,7 +38,7 @@ do
   read USER_GUESS
 
   # check if guess is number
-  IS_NUMBER=$(echo $USER_GUESS | grep -E "^[0-9]+$")
+  IS_NUMBER=$($USER_GUESS =~ "^[0-9]+$")
   if [[ -z $IS_NUMBER ]]
   then
     # increment guess count
@@ -62,9 +62,9 @@ done
 echo -e "You guessed it in $GUESS_COUNT tries. The secret number was $SECRET. Nice job!"
 
 # check if old best guess is higher than current game
-if [[ $BEST_GUESS -gt $GUESS_COUNT ]]
+if [[ $BEST_GAME -eq 0 || $BEST_GAME -gt $GUESS_COUNT ]]
 then
-  UPDATE_BEST_GUESS=$($PSQL "update users set best_guess=$BEST_GUESS where username='$USERNAME'")
+  UPDATE_BEST_GAME=$($PSQL "update users set best_game=$GUESS_COUNT where username='$USERNAME'")
 fi
 
 # update games played
