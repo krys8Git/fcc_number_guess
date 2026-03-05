@@ -15,6 +15,8 @@ then
   # create user if does not exist
   $($PSQL "insert into users(username) values('$USERNAME')")
   echo -e "Welcome, $USERNAME! It looks like this is your first time here."
+  GAMES_PLAYED=$($PSQL "select games_played from users where username=$USERNAME")
+  BEST_GAME=$($PSQL "select best_game from users where username=$USERNAME")
 else
   # query info on existing user
   GAMES_PLAYED=$($PSQL "select games_played from users where username=$USERNAME")
@@ -57,6 +59,18 @@ done
 # secret number was found
 echo -e "You guessed it in $GUESS_COUNT tries. The secret number was $SECRET. Nice job!"
 
-# add stats into database
-ADD_STATS=$($PSQL "")
+# check if old best guess is higher than current game
+if [[ $BEST_GUESS > $GUESS_COUNT ]]
+then
+  UPDATE_BEST_GUESS=$($PSQL "update users set best_guess=$BEST_GUESS where username='$USERNAME'")
+fi
+
+# update games played
+GAMES_PLAYED=$GAMES_PLAYED+1
+UPDATE_GAMES_PLAYED=$($PSQL "update users set games_played=$GAMES_PLAYED where username='$USERNAME'")
+
+
+
+
+
 
